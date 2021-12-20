@@ -3,12 +3,18 @@
 function main() {
   $settingsFile = 'settings.php';
 
-  if (existsSettingsFile($settingsFile)) {
-    startConversion($settingsFile);
+  try {
+    if (existsSettingsFile($settingsFile)) {
+      startConversion($settingsFile);
+    }
+    else {
+      createSettingsFile($settingsFile);
+      printInstructions($settingsFile);
+    }
   }
-  else {
-    createSettingsFile($settingsFile);
-    printInstructions($settingsFile);
+  catch (Exception $e) {
+    echo "ERROR: " . $e->getMessage();
+    echo "\n\n";
   }
 }
 
@@ -17,31 +23,38 @@ function existsSettingsFile($settingsFile) {
 }
 
 function startConversion($settingsFile) {
-  echo "Converting...\n";
+  $db = new DB($settingsFile);
+  $ussCreator = new UssCreator($db);
+  $ussCreator->start();
 }
 
 function createSettingsFile($settingsFile) {
   $dummySettings = <<< 'END'
 <?php
+
 /**************************************************
 * Create CiviCRM Unified Star Schema: settings file
 ***************************************************/
 
 // specify how to connect to the CiviCRM database
-$source_db_host='localhost';
-$source_db_port=3306;
-$source_db_name='REPLACE-ME';
-$source_db_charset='utf8';
-$source_db_user='REPLACE-ME';
-$source_db_password='REPLACE-ME';
+$sourceDbSettings = [
+  'host' => 'localhost',
+  'port' => 3306,
+  'dbname' => 'REPLACE-ME',
+  'charset' => 'utf8',
+  'user' => 'REPLACE-ME',
+  'password' => 'REPLACE-ME',
+];
 
 // specify in which database the unified star schema has to be created
-$target_db_host='localhost';
-$target_db_port=3306;
-$target_db_name='REPLACE-ME';
-$target_db_charset='utf8';
-$target_db_user='REPLACE-ME';
-$target_db_password='REPLACE-ME';
+$targetDbSettings = [
+  'host' => 'localhost',
+  'port' => 3306,
+  'dbname' => 'REPLACE-ME',
+  'charset' => 'utf8',
+  'user' => 'REPLACE-ME',
+  'password' => 'REPLACE-ME',
+];
 
 END;
 
@@ -57,5 +70,9 @@ function printInstructions($settingsFile) {
   echo "Then start the conversion with:\n";
   echo "    ./create_civi_uss.sh\n\n";
 }
+
+spl_autoload_register(function ($class_name) {
+  include 'classes/' . $class_name . '.php';
+});
 
 main();
