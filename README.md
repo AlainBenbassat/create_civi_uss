@@ -1,3 +1,3 @@
 # Create Civi USS
 
-Creates a Universal Star Schema from CiviCRM data.
+Creates a Unified Star Schema from a CiviCRM database.
