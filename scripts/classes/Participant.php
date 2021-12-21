@@ -20,8 +20,8 @@ class Participant extends Entity {
     return '
       drop table if exists participants;
       create table participants (
-        _KEY_participants int(11) primary key,
-        participant_id int(11),
+        _KEY_participants int(10) primary key,
+        participant_id int(10),
         register_date datetime,
         status varchar(255)
       );
@@ -53,7 +53,8 @@ class Participant extends Entity {
 
   public function getSqlBridgeAlter() {
     return '
-      alter table _bridge add column _KEY_participants int(11);
+      alter table _bridge add column _KEY_participants int(10);
+      alter table _bridge add constraint fk_KEY_participants FOREIGN KEY (_KEY_participants) REFERENCES participants(_KEY_participants);
     ';
   }
 

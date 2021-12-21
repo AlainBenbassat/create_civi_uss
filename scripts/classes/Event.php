@@ -22,8 +22,8 @@ class Event extends Entity {
     return '
       drop table if exists events;
       create table events (
-        _KEY_events int(11) primary key,
-        event_id int(11),
+        _KEY_events int(10) primary key,
+        event_id int(10),
         event_type varchar(255),
         title varchar(255),
         start_date datetime,
@@ -61,7 +61,8 @@ class Event extends Entity {
 
   public function getSqlBridgeAlter() {
     return '
-      alter table _bridge add column _KEY_events int(11);
+      alter table _bridge add column _KEY_events int(10);
+      alter table _bridge add constraint fk_KEY_events FOREIGN KEY (_KEY_events) REFERENCES events(_KEY_events);
     ';
   }
 

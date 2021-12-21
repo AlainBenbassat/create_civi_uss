@@ -19,8 +19,8 @@ class Contact extends Entity {
     return '
       drop table if exists contacts;
       create table contacts (
-        _KEY_contacts int(11) primary key,
-        contact_id int(11),
+        _KEY_contacts int(10) primary key,
+        contact_id int(10),
         contact_type varchar(255),
         first_name varchar(255),
         last_name varchar(255),
@@ -58,7 +58,8 @@ class Contact extends Entity {
 
   public function getSqlBridgeAlter() {
     return '
-      alter table _bridge add column _KEY_contacts int(11);
+      alter table _bridge add column _KEY_contacts int(10);
+      alter table _bridge add constraint fk_KEY_contacts FOREIGN KEY (_KEY_contacts) REFERENCES contacts(_KEY_contacts);
     ';
   }
 

@@ -11,9 +11,11 @@ class UssCreator {
     $this->createBridge();
 
     $this->convertEntities([
-      /*'contacts' => 'Contact',
-      'events' => 'Event',*/
+      'contacts' => 'Contact',
+      'campaigns' => 'Campaign',
+      'events' => 'Event',
       'participants' => 'Participant',
+      'contributiuons' => 'Contribution',
     ]);
   }
 
